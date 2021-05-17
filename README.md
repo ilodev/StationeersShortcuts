@@ -27,7 +27,13 @@ The Mod introduces custom shortcuts for specific slots on the backback and the t
 of the character, and other custom tools.
 
 Go to Settings, Controls and look for the Shortcuts section. Binding will be allowed for 
-the first 4 slots of a backpack or a toolbelt, as well as for specific tools (including
-mk1 or mk2 versions).
+the first four slots of a backpack or a toolbelt, first two slots of the uniform, as well as
+for specific tools (including mk1 or mk2 versions).
 
+[Settings]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Settings > Controls"
+
+Once your bindings are setup, they will show up in the corresponding inventory for a quick
+reference:
+
+[Bindings]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Selected bindings"
 

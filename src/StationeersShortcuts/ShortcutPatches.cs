@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.Scripts.Inventory;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Objects.Entities;
@@ -39,6 +35,8 @@ namespace StationeersShortcuts
             ShortcutInjectBindingGroup.AddKey("Backpack 3", KeyCode.Keypad8, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Backpack 4", KeyCode.Keypad9, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Backpack 5", KeyCode.Keypad4, controlsGroup1, false);
+            ShortcutInjectBindingGroup.AddKey("Uniform 1", KeyCode.None, controlsGroup1, false);
+            ShortcutInjectBindingGroup.AddKey("Uniform 2", KeyCode.None, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Toolbelt 1", KeyCode.Keypad5, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Toolbelt 2", KeyCode.Keypad6, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Toolbelt 3", KeyCode.None, controlsGroup1, false);
@@ -50,6 +48,7 @@ namespace StationeersShortcuts
             ShortcutInjectBindingGroup.AddKey("Cable Cutters", KeyCode.None, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Screwdriver", KeyCode.None, controlsGroup1, false);
             ShortcutInjectBindingGroup.AddKey("Crowbar", KeyCode.None, controlsGroup1, false);
+            ShortcutInjectBindingGroup.AddKey("Authoring tool", KeyCode.None, controlsGroup1, false);
 
             // TODO ADD other tools
             //ShortcutInjectBindingGroup.AddKey("Weapon", KeyCode.None, controlsGroup1, false);
@@ -84,6 +83,13 @@ namespace StationeersShortcuts
 
 
     /* Custom Postfix to add the shortcut text to the slot display if available.
+       To display the current binding Slot we have any of these available texts"
+
+        SlotDisplayButton.CurrentSlot.Text.text = "T1"; // Bottom
+        SlotDisplayButton.CurrentSlot.Text2.text = "T2"; // Top Right
+        SlotDisplayButton.CurrentSlot.SecondaryName.text = "t3"; // Center
+        SlotDisplayButton.CurrentSlot.HotkeyGrid.Hotkey.ControlText.text = "SC1";
+
      */
     [HarmonyPatch(typeof(Slot), "RefreshSlotDisplay", new Type[] { typeof(bool) })]
     class UpdateSlotShortCutText
@@ -116,8 +122,23 @@ namespace StationeersShortcuts
                 {
                     TextForSlotId(__instance, "Backpack 5", 4);
                 }
-
             }
+
+            if (Character.UniformSlot.Occupant != null && Character.UniformSlot.Occupant == __instance.Parent)
+            {
+                UnityEngine.Debug.Log("Refresh uniform slot: " + __instance.DisplayName.ToString());
+                // Find our current index in the backpack
+                if (__instance == __instance.Parent.Slots[0])
+                {
+                    TextForSlotId(__instance, "Uniform 1", 0);
+                }
+                if (__instance == __instance.Parent.Slots[1])
+                {
+                    TextForSlotId(__instance, "Uniform 2", 1);
+                }
+            }
+
+
 
             if (Character.ToolbeltSlot.Occupant != null && Character.ToolbeltSlot.Occupant == __instance.Parent)
             {
@@ -140,7 +161,6 @@ namespace StationeersShortcuts
                     TextForSlotId(__instance, "Toolbelt 4", 3);
                 }
             }
-
         }
 
         static void TextForSlotId(Slot __instance, string text, int index)

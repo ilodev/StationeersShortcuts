@@ -16,18 +16,23 @@ using UnityEngine;
 
 /* Statineers Shortcuts plugin ads a short of quick shortcut key bindings for the 
  * Slots and Items in the character inventory for quick access.
- */ 
+ */
 
 namespace StationeersShortcuts
 {
-    [BepInPlugin("net.ilo.plugins.ShortCutsPlugin", "ShortCuts Plug-In", "0.9.0.0")]
+    [BepInPlugin("net.ilo.plugins.ShortCutsPlugin", "ShortCuts Plug-In", "0.9.1.0")]
     public class ShortcutsPlugin: BaseUnityPlugin
     {
+
         // Backpack shortcuts
         KeyCode BPSC2;
         KeyCode BPSC3;
         KeyCode BPSC4;
         KeyCode BPSC5;
+
+        // Suit shortcuts
+        KeyCode UNSC1;
+        KeyCode UNSC2;
 
         // ToolBelt shortcuts
         KeyCode TBSC1;
@@ -43,6 +48,7 @@ namespace StationeersShortcuts
         KeyCode CuttersSC;
         KeyCode ScrewSC;
         KeyCode CrowbarSC;
+        KeyCode AuthoringSC;
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
@@ -56,7 +62,6 @@ namespace StationeersShortcuts
                 // We can now add an event handler for controls change, so we keep track of 
                 // the current key selection 
                 KeyManager.OnControlsChanged += new KeyManager.Event(ControlsChangedEvent);
-
 
             }
             catch (Exception e)
@@ -79,6 +84,10 @@ namespace StationeersShortcuts
             BPSC4 = KeyManager.GetKey("Backpack 4");
             BPSC5 = KeyManager.GetKey("Backpack 5");
 
+            // Uniform shortcuts 
+            UNSC1 = KeyManager.GetKey("Uniform 1");
+            UNSC2 = KeyManager.GetKey("Uniform 2");
+
             // Toolbelt keybindings
             TBSC1 = KeyManager.GetKey("Toolbelt 1");
             TBSC2 = KeyManager.GetKey("Toolbelt 2");
@@ -86,31 +95,26 @@ namespace StationeersShortcuts
             TBSC4 = KeyManager.GetKey("Toolbelt 4");
 
             // Tools keybindings
-            GrinderSC = KeyManager.GetKey("Grinder"); 
-            WelderSC = KeyManager.GetKey("Welder"); 
-            DrillSC = KeyManager.GetKey("Hand Drill"); ;
-            WrenchSC = KeyManager.GetKey("Wrench"); 
-            CuttersSC = KeyManager.GetKey("Cable Cutters"); 
-            ScrewSC = KeyManager.GetKey("Screwdriver"); 
-            CrowbarSC =  KeyManager.GetKey("Crowbar");
+            GrinderSC   = KeyManager.GetKey("Grinder"); 
+            WelderSC    = KeyManager.GetKey("Welder"); 
+            DrillSC     = KeyManager.GetKey("Hand Drill"); ;
+            WrenchSC    = KeyManager.GetKey("Wrench"); 
+            CuttersSC   = KeyManager.GetKey("Cable Cutters"); 
+            ScrewSC     = KeyManager.GetKey("Screwdriver");
+            CrowbarSC   = KeyManager.GetKey("Crowbar");
+            AuthoringSC = KeyManager.GetKey("Authoring tool");
         }
 
         // Tracking of user inputs to perform slot swapping.
 
         void Update()
         {
-
+            // Usual suspects, don't check for key pressing in any of these cases
             if (GameManager.GameState != GameState.Running || (UnityEngine.Object)InventoryManager.ParentBrain == (UnityEngine.Object)null || WorldManager.IsPaused)
                 return;
 
+            // this will be the slot from any of the inventory items.
             Slot inventory = null;
-
-            /*  Slot available texts
-            SlotDisplayButton.CurrentSlot.Text.text = "T1"; // Bottom
-            SlotDisplayButton.CurrentSlot.Text2.text = "T2"; // Top Right
-            SlotDisplayButton.CurrentSlot.SecondaryName.text = "t3"; // Center
-            SlotDisplayButton.CurrentSlot.HotkeyGrid.Hotkey.ControlText.text = "SC1";
-            */
 
             // Backpack slots
             if (KeyManager.GetButtonDown(BPSC2))
@@ -133,6 +137,19 @@ namespace StationeersShortcuts
                 UnityEngine.Debug.Log("Backpack 5 selected");
                 inventory = FindSlotIdInBackPack(5);
             }
+
+            // Uniform slots
+            if (KeyManager.GetButtonDown(UNSC1))
+            {
+                UnityEngine.Debug.Log("Uniform 1 selected");
+                inventory = FindSlotIdInUniform(1);
+            }
+            if (KeyManager.GetButtonDown(UNSC2))
+            {
+                UnityEngine.Debug.Log("Uniform 2 selected");
+                inventory = FindSlotIdInUniform(2);
+            }
+
 
             // toolbelt slots
             if (KeyManager.GetButtonDown(TBSC1))
@@ -213,6 +230,12 @@ namespace StationeersShortcuts
                     inventory = findBeltSlotWithHash(1440775434); // mk2 crowbar
             }
 
+            if (KeyManager.GetButtonDown(AuthoringSC))
+            {
+                UnityEngine.Debug.Log("Authoring tool selected");
+                inventory = findBeltSlotWithHash(789015045);
+            }
+
             // Get current active hand slot
             Slot hand = InventoryManager.ActiveHandSlot;
 
@@ -244,6 +267,18 @@ namespace StationeersShortcuts
             }
             return (Slot)null;
         }
+
+        private Slot FindSlotIdInUniform(int index)
+        {
+            Human Character = InventoryManager.ParentHuman;
+            if (Character.UniformSlot.Occupant != null && Character.UniformSlot.Occupant.Slots.Count > index)
+            {
+                return Character.UniformSlot.Occupant.Slots[index - 1];
+            }
+            return (Slot)null;
+        }
+
+
         private Slot FindSlotIdInToolBelt(int index)
         {
             Human Character = InventoryManager.ParentHuman;
