@@ -37,3 +37,5 @@ reference:
 
 ![Bindings](https://github.com/ilodev/StationeersShortcuts/blob/main/img/bindings.png?raw=true)
 
+Youtube video showcasing the mod:
+https://www.youtube.com/watch?v=STcQD7d4kGI
