@@ -30,10 +30,10 @@ Go to Settings, Controls and look for the Shortcuts section. Binding will be all
 the first four slots of a backpack or a toolbelt, first two slots of the uniform, as well as
 for specific tools (including mk1 or mk2 versions).
 
-[Settings]: https://github.com/ilodev/StationeersShortcuts/blob/main/img/controls.png?raw=true "Settings > Controls"
+![Settings](https://github.com/ilodev/StationeersShortcuts/blob/main/img/controls.png?raw=true)
 
 Once your bindings are setup, they will show up in the corresponding inventory for a quick
 reference:
 
-[Bindings]: https://github.com/ilodev/StationeersShortcuts/blob/main/img/bindings.png?raw=true "Selected bindings"
+![Bindings]:(https://github.com/ilodev/StationeersShortcuts/blob/main/img/bindings.png?raw=true)
 
