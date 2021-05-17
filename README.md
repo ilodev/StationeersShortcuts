@@ -35,5 +35,5 @@ for specific tools (including mk1 or mk2 versions).
 Once your bindings are setup, they will show up in the corresponding inventory for a quick
 reference:
 
-![Bindings]:(https://github.com/ilodev/StationeersShortcuts/blob/main/img/bindings.png?raw=true)
+![Bindings](https://github.com/ilodev/StationeersShortcuts/blob/main/img/bindings.png?raw=true)
 
